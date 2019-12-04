@@ -12,6 +12,10 @@
 */
 
 Route::get('/', function () {
-
+    //dump([12,34,12]);
+//    exit();
+    //dd([12,377,12]);
     return view('welcome');
 });
+
+Route::get('/users', 'TestController@index');
