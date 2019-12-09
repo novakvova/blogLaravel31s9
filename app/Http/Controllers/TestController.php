@@ -11,8 +11,10 @@ class TestController extends Controller
     //
     public function index() {
 
-        $count = DB::table('tbl_categories')->count();
+        //$count = DB::table('tbl_categories')->count();
 
-        dd(["index", $count]);
+        phpinfo();
+
+        //dd(["index", $count]);
     }
 }
