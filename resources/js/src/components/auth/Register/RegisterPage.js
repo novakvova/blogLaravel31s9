@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import TextFieldGroup from '../../common/TextFieldGroup';
 
 export class RegisterPage extends Component {
 
@@ -29,23 +30,48 @@ export class RegisterPage extends Component {
         this.setStateByErrors(e.target.name, e.target.value);
     };
 
+    handleSubmit = (e) => {
+        e.preventDefault();
+        console.log('--register submit--');
+        const { email } = this.state;
+        let errors = {};
+
+        if (email === "") errors.email = "Поле не може бути пустим!";
+
+        const isValid = Object.keys(errors).length === 0;
+        if (isValid) {
+            console.log('Model is Valid')
+            //ajax axios post
+        }
+        else {
+            this.setState({ errors });
+        }
+    }
+
 
     render() {
-        const { email } = this.state;
+        const { email, password, errors } = this.state;
         console.log('Regiter page state', this.state);
         return (
             <>
                 <h1>Register page Hello {email}</h1>
-                <form name="form" >
-                    <div className="form-group">
-                        <label htmlFor="email">Пошта</label>
-                        <input type="text"
-                            className="form-control"
-                            id="email"
-                            name="email"
-                            value={email}
-                            onChange={this.handleChange} />
-                    </div>
+                <form name="form" onSubmit={this.handleSubmit}>
+
+                    <TextFieldGroup
+                        field="email"
+                        label="Електронна пошта"
+                        value={email}
+                        error={errors.email}
+                        onChange={this.handleChange}
+                    />
+                    <TextFieldGroup
+                        field="password"
+                        label="Пароль"
+                        value={password}
+                        error={errors.password}
+                        onChange={this.handleChange}
+                        type="password"
+                    />
 
                     <div className="form-group">
                         <button className="btn btn-primary">Зареєструватися</button>
