@@ -54,7 +54,7 @@ export class RegisterPage extends Component {
         console.log('Regiter page state', this.state);
         return (
             <>
-                <h1>Register page Hello {email}</h1>
+                <h1 className="d-flex justify-content-center">Register page Hello {email}</h1>
                 <form name="form" onSubmit={this.handleSubmit}>
 
                     <TextFieldGroup
