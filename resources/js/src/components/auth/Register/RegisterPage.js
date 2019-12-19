@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import TextFieldGroup from '../../common/TextFieldGroup';
 
+import CropperModal from "../../common/cropper/CropperModal";
+
 export class RegisterPage extends Component {
 
 
@@ -8,6 +10,7 @@ export class RegisterPage extends Component {
         email: '',
         password: '',
         passwordConfirm: '',
+        photo: '',
         errors: {
             //email: 'Invalid'
         }
@@ -30,6 +33,12 @@ export class RegisterPage extends Component {
         this.setStateByErrors(e.target.name, e.target.value);
     };
 
+    getCroppedImage = img => {
+        //console.log('----img-----', img);
+
+        this.setState({photo: img});
+    };
+
     handleSubmit = (e) => {
         e.preventDefault();
         console.log('--register submit--');
@@ -50,13 +59,22 @@ export class RegisterPage extends Component {
 
 
     render() {
-        const { email, password, errors } = this.state;
+
+
+        const { email, password,photo, errors } = this.state;
+
+         let image =
+             "https://topdogtours.com/wp-content/uploads/Top-Dog-Tours-Logo-no-Text-300x259.png";
+         if (!!photo) {
+             image = photo;
+         }
         console.log('Regiter page state', this.state);
         return (
             <>
-                <h1 className="d-flex justify-content-center">Register page Hello {email}</h1>
+                <h1 className="d-flex justify-content-center">
+                    Register page Hello {email}
+                </h1>
                 <form name="form" onSubmit={this.handleSubmit}>
-
                     <TextFieldGroup
                         field="email"
                         label="Електронна пошта"
@@ -64,6 +82,16 @@ export class RegisterPage extends Component {
                         error={errors.email}
                         onChange={this.handleChange}
                     />
+
+                    <img
+                        src={image}
+                        width="100"
+                        className="rounded-circle"
+                        alt="Foto user"
+                    />
+
+                    <CropperModal getCroppedImage={this.getCroppedImage} />
+
                     <TextFieldGroup
                         field="password"
                         label="Пароль"
@@ -74,12 +102,13 @@ export class RegisterPage extends Component {
                     />
 
                     <div className="form-group">
-                        <button className="btn btn-primary">Зареєструватися</button>
-
+                        <button className="btn btn-primary">
+                            Зареєструватися
+                        </button>
                     </div>
                 </form>
             </>
-        )
+        );
     }
 }
 
