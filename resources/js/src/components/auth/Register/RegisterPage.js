@@ -1,20 +1,19 @@
-import React, { Component } from 'react'
-import TextFieldGroup from '../../common/TextFieldGroup';
+import React, { Component } from "react";
+import TextFieldGroup from "../../common/TextFieldGroup";
+import axios from 'axios';
 
 import CropperModal from "../../common/cropper/CropperModal";
 
 export class RegisterPage extends Component {
-
-
     state = {
-        email: '',
-        password: '',
-        passwordConfirm: '',
-        photo: '',
+        email: "",
+        password: "",
+        passwordConfirm: "",
+        photo: "",
         errors: {
             //email: 'Invalid'
         }
-    }
+    };
 
     setStateByErrors = (name, value) => {
         if (!!this.state.errors[name]) {
@@ -36,39 +35,42 @@ export class RegisterPage extends Component {
     getCroppedImage = img => {
         //console.log('----img-----', img);
 
-        this.setState({photo: img});
+        this.setState({ photo: img });
     };
 
-    handleSubmit = (e) => {
+    handleSubmit = e => {
         e.preventDefault();
-        console.log('--register submit--');
-        const { email } = this.state;
+        console.log("--register submit--");
+        const { email, photo } = this.state;
         let errors = {};
 
         if (email === "") errors.email = "Поле не може бути пустим!";
+        if (photo === "") errors.photo = "Поле не може бути пустим!";
 
         const isValid = Object.keys(errors).length === 0;
         if (isValid) {
-            console.log('Model is Valid')
+            console.log("Model is Valid");
+            const model = {email, photo};
+            axios.post('/api/register',model)
+                .then((resp)=> {
+                    console.log('----server responce----', resp);
+                },
+                error=> {console.log('----server error----', error); });
             //ajax axios post
-        }
-        else {
+        } else {
             this.setState({ errors });
         }
-    }
-
+    };
 
     render() {
+        const { email, password, photo, errors } = this.state;
 
-
-        const { email, password,photo, errors } = this.state;
-
-         let image =
-             "https://topdogtours.com/wp-content/uploads/Top-Dog-Tours-Logo-no-Text-300x259.png";
-         if (!!photo) {
-             image = photo;
-         }
-        console.log('Regiter page state', this.state);
+        let image =
+            "https://topdogtours.com/wp-content/uploads/Top-Dog-Tours-Logo-no-Text-300x259.png";
+        if (!!photo) {
+            image = photo;
+        }
+        console.log("Regiter page state", this.state);
         return (
             <>
                 <h1 className="d-flex justify-content-center">
@@ -90,7 +92,10 @@ export class RegisterPage extends Component {
                         alt="Foto user"
                     />
 
-                    <CropperModal getCroppedImage={this.getCroppedImage} />
+                    <CropperModal
+                        getCroppedImage={this.getCroppedImage}
+                        error={errors.photo}
+                    />
 
                     <TextFieldGroup
                         field="password"
@@ -112,4 +117,4 @@ export class RegisterPage extends Component {
     }
 }
 
-export default RegisterPage
+export default RegisterPage;

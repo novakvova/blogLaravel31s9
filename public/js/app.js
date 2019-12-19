@@ -75850,7 +75850,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _common_TextFieldGroup__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../common/TextFieldGroup */ "./resources/js/src/components/common/TextFieldGroup.js");
-/* harmony import */ var _common_cropper_CropperModal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../common/cropper/CropperModal */ "./resources/js/src/components/common/cropper/CropperModal.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _common_cropper_CropperModal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../common/cropper/CropperModal */ "./resources/js/src/components/common/cropper/CropperModal.js");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -75874,6 +75876,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
 var RegisterPage =
 /*#__PURE__*/
 function (_Component) {
@@ -75893,10 +75896,10 @@ function (_Component) {
     _this = _possibleConstructorReturn(this, (_getPrototypeOf2 = _getPrototypeOf(RegisterPage)).call.apply(_getPrototypeOf2, [this].concat(args)));
 
     _defineProperty(_assertThisInitialized(_this), "state", {
-      email: '',
-      password: '',
-      passwordConfirm: '',
-      photo: '',
+      email: "",
+      password: "",
+      passwordConfirm: "",
+      photo: "",
       errors: {//email: 'Invalid'
       }
     });
@@ -75927,14 +75930,26 @@ function (_Component) {
 
     _defineProperty(_assertThisInitialized(_this), "handleSubmit", function (e) {
       e.preventDefault();
-      console.log('--register submit--');
-      var email = _this.state.email;
+      console.log("--register submit--");
+      var _this$state = _this.state,
+          email = _this$state.email,
+          photo = _this$state.photo;
       var errors = {};
       if (email === "") errors.email = "Поле не може бути пустим!";
+      if (photo === "") errors.photo = "Поле не може бути пустим!";
       var isValid = Object.keys(errors).length === 0;
 
       if (isValid) {
-        console.log('Model is Valid'); //ajax axios post
+        console.log("Model is Valid");
+        var model = {
+          email: email,
+          photo: photo
+        };
+        axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/api/register', model).then(function (resp) {
+          console.log('----server responce----', resp);
+        }, function (error) {
+          console.log('----server error----', error);
+        }); //ajax axios post
       } else {
         _this.setState({
           errors: errors
@@ -75948,18 +75963,18 @@ function (_Component) {
   _createClass(RegisterPage, [{
     key: "render",
     value: function render() {
-      var _this$state = this.state,
-          email = _this$state.email,
-          password = _this$state.password,
-          photo = _this$state.photo,
-          errors = _this$state.errors;
+      var _this$state2 = this.state,
+          email = _this$state2.email,
+          password = _this$state2.password,
+          photo = _this$state2.photo,
+          errors = _this$state2.errors;
       var image = "https://topdogtours.com/wp-content/uploads/Top-Dog-Tours-Logo-no-Text-300x259.png";
 
       if (!!photo) {
         image = photo;
       }
 
-      console.log('Regiter page state', this.state);
+      console.log("Regiter page state", this.state);
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0___default.a.Fragment, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("h1", {
         className: "d-flex justify-content-center"
       }, "Register page Hello ", email), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("form", {
@@ -75976,8 +75991,9 @@ function (_Component) {
         width: "100",
         className: "rounded-circle",
         alt: "Foto user"
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_common_cropper_CropperModal__WEBPACK_IMPORTED_MODULE_2__["default"], {
-        getCroppedImage: this.getCroppedImage
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_common_cropper_CropperModal__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        getCroppedImage: this.getCroppedImage,
+        error: errors.photo
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_common_TextFieldGroup__WEBPACK_IMPORTED_MODULE_1__["default"], {
         field: "password",
         label: "\u041F\u0430\u0440\u043E\u043B\u044C",
